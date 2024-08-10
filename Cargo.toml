@@ -1,0 +1,21 @@
+[package]
+name         = "shortints"
+version      = "0.0.1"
+description  = "Library of custom-length integers"
+categories   = ["data-structures", "database", "encoding"]
+keywords     = ["integer", "library", "utility"]
+edition      = "2021"
+rust-version = "1.75.0"
+license      = "MIT"
+authors      = ["Dan Williams <dan@dotfive.co.uk>"]
+repository   = "https://github.com/danwilliams/shortints"
+readme       = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[profile.release]
+strip     = true   # Automatically strip symbols from the binary
+opt-level = 3      # Maximum optimisation (this is the cargo default)
+lto       = "thin" # Enable link-time optimisation (fast)
+
+[dependencies]
