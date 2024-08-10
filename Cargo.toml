@@ -24,6 +24,10 @@ reasons = []
 #==============================[  DEPENDENCIES  ]===============================
 
 [dependencies]
+bytes              = "1.7.1"
+serde              = { version = "1.0.204", features = ["derive"] }
+thiserror          = "1.0.63"
+tokio-postgres     = "0.7.11"
 
 #=================================[  LINTS  ]===================================
 
