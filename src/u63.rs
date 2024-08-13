@@ -4,6 +4,7 @@
 
 //		Packages
 
+use crate::errors::ConversionError;
 use bytes::BytesMut;
 use core::{
 	fmt::{Display, Formatter, self},
@@ -14,26 +15,7 @@ use std::{
 	error::Error,
 	io::{Error as IoError, ErrorKind as IoErrorKind},
 };
-use thiserror::Error as ThisError;
 use tokio_postgres::types::{FromSql, IsNull, ToSql, Type, to_sql_checked};
-
-
-
-//		Enums
-
-//		U63Error																
-/// Represents all possible errors that can occur when using a [`u63`].
-#[derive(Clone, Debug, Eq, PartialEq, ThisError)]
-#[non_exhaustive]
-pub enum U63Error {
-	/// The incoming value is negative.
-	#[error("Value is negative")]
-	ValueIsNegative,
-	
-	/// The incoming value is too large to be converted to the destination type.
-	#[error("Value too large")]
-	ValueTooLarge,
-}
 
 
 
@@ -289,7 +271,7 @@ impl ToSql for u63 {
 
 //󰭅		TryFrom: i8 -> u63														
 impl TryFrom<i8> for u63 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: i8) -> Result<Self, Self::Error> {
@@ -301,7 +283,7 @@ impl TryFrom<i8> for u63 {
 
 //󰭅		TryFrom: i16 -> u63														
 impl TryFrom<i16> for u63 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: i16) -> Result<Self, Self::Error> {
@@ -313,7 +295,7 @@ impl TryFrom<i16> for u63 {
 
 //󰭅		TryFrom: i32 -> u63														
 impl TryFrom<i32> for u63 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: i32) -> Result<Self, Self::Error> {
@@ -325,28 +307,28 @@ impl TryFrom<i32> for u63 {
 
 //󰭅		TryFrom: i64 -> u63														
 impl TryFrom<i64> for u63 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: i64) -> Result<Self, Self::Error> {
 		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_sign_loss, reason = "Already checked"))]
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_sign_loss))]
-		(v >= 0).then_some(Self(v as u64)).ok_or(U63Error::ValueIsNegative)
+		(v >= 0).then_some(Self(v as u64)).ok_or(ConversionError::ValueIsNegative)
 	}
 }
 
 //󰭅		TryFrom: i128 -> u63													
 impl TryFrom<i128> for u63 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: i128) -> Result<Self, Self::Error> {
 		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
 		if v < 0 {
-			Err(U63Error::ValueIsNegative)
+			Err(ConversionError::ValueIsNegative)
 		} else if v > i64::MAX as i128 {
-			Err(U63Error::ValueTooLarge)
+			Err(ConversionError::ValueTooLarge)
 		} else {
 			#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
 			#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
@@ -359,43 +341,43 @@ impl TryFrom<i128> for u63 {
 
 //󰭅		TryFrom: u63 -> i8														
 impl TryFrom<u63> for i8 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
 		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
-		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(U63Error::ValueTooLarge)
+		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
 //󰭅		TryFrom: u63 -> i16														
 impl TryFrom<u63> for i16 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
 		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
-		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(U63Error::ValueTooLarge)
+		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
 //󰭅		TryFrom: u63 -> i32														
 impl TryFrom<u63> for i32 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
 		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
-		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(U63Error::ValueTooLarge)
+		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
 //󰭅		TryFrom: u63 -> u8														
 impl TryFrom<u63> for u8 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
@@ -403,13 +385,13 @@ impl TryFrom<u63> for u8 {
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
 		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
-		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(U63Error::ValueTooLarge)
+		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
 //󰭅		TryFrom: u63 -> u16														
 impl TryFrom<u63> for u16 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
@@ -417,13 +399,13 @@ impl TryFrom<u63> for u16 {
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
 		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
-		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(U63Error::ValueTooLarge)
+		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
 //󰭅		TryFrom: u63 -> u32														
 impl TryFrom<u63> for u32 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
@@ -431,29 +413,29 @@ impl TryFrom<u63> for u32 {
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
 		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
-		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(U63Error::ValueTooLarge)
+		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
 //󰭅		TryFrom: u64 -> u63														
 impl TryFrom<u64> for u63 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: u64) -> Result<Self, Self::Error> {
-		i64::try_from(v).is_ok().then_some(Self(v)).ok_or(U63Error::ValueTooLarge)
+		i64::try_from(v).is_ok().then_some(Self(v)).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
 //󰭅		TryFrom: u128 -> u63													
 impl TryFrom<u128> for u63 {
-	type Error = U63Error;
+	type Error = ConversionError;
 	
 	//		try_from															
 	fn try_from(v: u128) -> Result<Self, Self::Error> {
 		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
 		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
-		(v <= i64::MAX as u128).then_some(Self(v as u64)).ok_or(U63Error::ValueTooLarge)
+		(v <= i64::MAX as u128).then_some(Self(v as u64)).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 

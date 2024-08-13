@@ -32,6 +32,8 @@
 
 //		Modules
 
+mod errors;
+
 #[path = "u63.rs"]
 mod u63_mod;
 
@@ -39,6 +41,7 @@ mod u63_mod;
 
 //		Packages
 
+pub use errors::ConversionError;
 pub use u63_mod::u63;
 
 
