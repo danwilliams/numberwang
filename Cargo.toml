@@ -5,7 +5,7 @@ description  = "Library of custom-length integers"
 categories   = ["data-structures", "database", "encoding"]
 keywords     = ["integer", "library", "utility"]
 edition      = "2021"
-rust-version = "1.75.0"
+rust-version = "1.81.0"
 license      = "MIT"
 authors      = ["Dan Williams <dan@dotfive.co.uk>"]
 repository   = "https://github.com/danwilliams/shortints"
@@ -17,9 +17,6 @@ readme       = "README.md"
 strip     = true   # Automatically strip symbols from the binary
 opt-level = 3      # Maximum optimisation (this is the cargo default)
 lto       = "thin" # Enable link-time optimisation (fast)
-
-[features]
-reasons = []
 
 #==============================[  DEPENDENCIES  ]===============================
 
@@ -89,14 +86,12 @@ allow_attributes_without_reason   = "forbid"
 dbg_macro                         = "forbid"
 exit                              = "forbid"
 infinite_loop                     = "forbid"
-missing_assert_message            = "deny"
 missing_docs_in_private_items     = "forbid"
 mod_module_files                  = "forbid"
 multiple_inherent_impl            = "forbid"
 panic_in_result_fn                = "forbid"
 str_to_string                     = "forbid"
 string_to_string                  = "forbid"
-tests_outside_test_module         = "forbid"
 unimplemented                     = "forbid"
 ##	Deny
 clone_on_ref_ptr                  = "deny"
@@ -114,22 +109,27 @@ impl_trait_in_params              = "deny"
 integer_division                  = "deny"
 lossy_float_literal               = "deny"
 mem_forget                        = "deny"
+missing_assert_message            = "deny"
 panic                             = "deny"
 print_stderr                      = "deny"
 print_stdout                      = "deny"
 rc_mutex                          = "deny"
+renamed_function_params           = "deny"
+tests_outside_test_module         = "deny"
 try_err                           = "deny"
 unwrap_in_result                  = "deny"
 unwrap_used                       = "deny"
 wildcard_enum_match_arm           = "deny"
 ##	Warn
 absolute_paths                    = "warn"
+allow_attributes                  = "warn"
 arithmetic_side_effects           = "warn"
 as_underscore                     = "warn"
 decimal_literal_representation    = "warn"
 default_numeric_fallback          = "warn"
 deref_by_slicing                  = "warn"
 empty_drop                        = "warn"
+field_scoped_visibility_modifiers = "warn"
 filetype_is_file                  = "warn"
 if_then_some_else_none            = "warn"
 indexing_slicing                  = "warn"
@@ -163,4 +163,9 @@ unseparated_literal_suffix        = "warn"
 use_debug                         = "warn"
 verbose_file_reads                = "warn"
 #	Clippy suspicious lints
+const_is_empty                    = "deny"
+deprecated_clippy_cfg_attr        = "deny"
+incompatible_msrv                 = "deny"
+multiple_bound_locations          = "deny"
 unconditional_recursion           = "deny"
+unnecessary_clippy_cfg            = "deny"

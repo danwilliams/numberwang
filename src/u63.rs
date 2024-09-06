@@ -7,14 +7,12 @@
 use crate::errors::ConversionError;
 use bytes::BytesMut;
 use core::{
+	error::Error,
 	fmt::{Display, Formatter, self},
 	ops::{Add, Deref, Div, Mul, Rem, Sub},
 };
 use serde::{Deserialize, Serialize};
-use std::{
-	error::Error,
-	io::{Error as IoError, ErrorKind as IoErrorKind},
-};
+use std::io::{Error as IoError, ErrorKind as IoErrorKind};
 use tokio_postgres::types::{FromSql, IsNull, ToSql, Type, to_sql_checked};
 
 
@@ -62,8 +60,7 @@ use tokio_postgres::types::{FromSql, IsNull, ToSql, Type, to_sql_checked};
 /// potentially lossy, [`TryFrom`] is implemented.
 /// 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[cfg_attr(    feature = "reasons",  allow(non_camel_case_types, reason = "Needed to fit with convention"))]
-#[cfg_attr(not(feature = "reasons"), allow(non_camel_case_types))]
+#[expect(non_camel_case_types, reason = "Needed to fit with convention")]
 pub struct u63(u64);
 
 //󰭅		u63																		
@@ -80,8 +77,7 @@ impl u63 {
 	
 	//		as_i64																
 	/// Represents the internal value as a signed 64-bit integer.
-	#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_wrap, reason = "Safe, as fully managed"))]
-	#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_wrap))]
+	#[expect(clippy::cast_possible_wrap, reason = "Safe, as fully managed")]
 	#[must_use]
 	pub const fn as_i64(&self) -> i64 {
 		self.0 as i64
@@ -125,10 +121,8 @@ impl Div for u63 {
 		if rhs.0 == 0 {
 			Self::MAX
 		} else {
-			#[cfg_attr(    feature = "reasons",  allow(clippy::arithmetic_side_effects, reason = "Already checked"))]
-			#[cfg_attr(not(feature = "reasons"), allow(clippy::arithmetic_side_effects))]
-			#[cfg_attr(    feature = "reasons",  allow(clippy::integer_division, reason = "Okay here, as intentional"))]
-			#[cfg_attr(not(feature = "reasons"), allow(clippy::integer_division))]
+			#[expect(clippy::arithmetic_side_effects, reason = "Already checked")]
+			#[expect(clippy::integer_division,        reason = "Okay here, as intentional")]
 			Self(self.0 / rhs.0)
 		}
 	}
@@ -138,8 +132,7 @@ impl Div for u63 {
 impl From<u8> for u63 {
 	//		from																
 	fn from(v: u8) -> Self {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
+		#[expect(clippy::cast_lossless, reason = "Fine here")]
 		Self(v as u64)
 	}
 }
@@ -148,8 +141,7 @@ impl From<u8> for u63 {
 impl From<u16> for u63 {
 	//		from																
 	fn from(v: u16) -> Self {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
+		#[expect(clippy::cast_lossless, reason = "Fine here")]
 		Self(v as u64)
 	}
 }
@@ -158,8 +150,7 @@ impl From<u16> for u63 {
 impl From<u32> for u63 {
 	//		from																
 	fn from(v: u32) -> Self {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
+		#[expect(clippy::cast_lossless, reason = "Fine here")]
 		Self(v as u64)
 	}
 }
@@ -167,8 +158,7 @@ impl From<u32> for u63 {
 //󰭅		From: u63 -> i64														
 impl From<u63> for i64 {
 	//		from																
-	#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_wrap, reason = "Safe, as fully managed"))]
-	#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_wrap))]
+	#[expect(clippy::cast_possible_wrap, reason = "Safe, as fully managed")]
 	fn from(v: u63) -> Self {
 		v.0 as Self
 	}
@@ -237,8 +227,7 @@ impl Rem for u63 {
 		if rhs.0 == 0 {
 			Self::MAX
 		} else {
-			#[cfg_attr(    feature = "reasons",  allow(clippy::arithmetic_side_effects, reason = "Already checked"))]
-			#[cfg_attr(not(feature = "reasons"), allow(clippy::arithmetic_side_effects))]
+			#[expect(clippy::arithmetic_side_effects, reason = "Already checked")]
 			Self(self.0 % rhs.0)
 		}
 	}
@@ -275,8 +264,7 @@ impl TryFrom<i8> for u63 {
 	
 	//		try_from															
 	fn try_from(v: i8) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
+		#[expect(clippy::cast_lossless, reason = "Fine here")]
 		Self::try_from(v as i64)
 	}
 }
@@ -287,8 +275,7 @@ impl TryFrom<i16> for u63 {
 	
 	//		try_from															
 	fn try_from(v: i16) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
+		#[expect(clippy::cast_lossless, reason = "Fine here")]
 		Self::try_from(v as i64)
 	}
 }
@@ -299,8 +286,7 @@ impl TryFrom<i32> for u63 {
 	
 	//		try_from															
 	fn try_from(v: i32) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
+		#[expect(clippy::cast_lossless, reason = "Fine here")]
 		Self::try_from(v as i64)
 	}
 }
@@ -311,8 +297,7 @@ impl TryFrom<i64> for u63 {
 	
 	//		try_from															
 	fn try_from(v: i64) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_sign_loss, reason = "Already checked"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_sign_loss))]
+		#[expect(clippy::cast_sign_loss, reason = "Already checked")]
 		(v >= 0).then_some(Self(v as u64)).ok_or(ConversionError::ValueIsNegative)
 	}
 }
@@ -323,17 +308,14 @@ impl TryFrom<i128> for u63 {
 	
 	//		try_from															
 	fn try_from(v: i128) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
+		#[expect(clippy::cast_lossless, reason = "Fine here")]
 		if v < 0 {
 			Err(ConversionError::ValueIsNegative)
 		} else if v > i64::MAX as i128 {
 			Err(ConversionError::ValueTooLarge)
 		} else {
-			#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
-			#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
-			#[cfg_attr(    feature = "reasons",  allow(clippy::cast_sign_loss, reason = "Already checked"))]
-			#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_sign_loss))]
+			#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
+			#[expect(clippy::cast_sign_loss,           reason = "Already checked")]
 			Ok(Self(v as u64))
 		}
 	}
@@ -345,8 +327,7 @@ impl TryFrom<u63> for i8 {
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
+		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
@@ -357,8 +338,7 @@ impl TryFrom<u63> for i16 {
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
+		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
@@ -369,8 +349,7 @@ impl TryFrom<u63> for i32 {
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
+		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
@@ -381,10 +360,8 @@ impl TryFrom<u63> for u8 {
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
+		#[expect(clippy::cast_lossless,            reason = "Fine here")]
+		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
@@ -395,10 +372,8 @@ impl TryFrom<u63> for u16 {
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
+		#[expect(clippy::cast_lossless,            reason = "Fine here")]
+		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
@@ -409,10 +384,8 @@ impl TryFrom<u63> for u32 {
 	
 	//		try_from															
 	fn try_from(v: u63) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_lossless, reason = "Fine here"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_lossless))]
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
+		#[expect(clippy::cast_lossless,            reason = "Fine here")]
+		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
@@ -433,8 +406,7 @@ impl TryFrom<u128> for u63 {
 	
 	//		try_from															
 	fn try_from(v: u128) -> Result<Self, Self::Error> {
-		#[cfg_attr(    feature = "reasons",  allow(clippy::cast_possible_truncation, reason = "Already checked"))]
-		#[cfg_attr(not(feature = "reasons"), allow(clippy::cast_possible_truncation))]
+		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v <= i64::MAX as u128).then_some(Self(v as u64)).ok_or(ConversionError::ValueTooLarge)
 	}
 }
