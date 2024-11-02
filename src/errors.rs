@@ -4,6 +4,7 @@
 
 //		Packages
 
+use core::num::{ParseIntError, TryFromIntError};
 use thiserror::Error as ThisError;
 
 
@@ -15,6 +16,14 @@ use thiserror::Error as ThisError;
 #[derive(Clone, Debug, Eq, PartialEq, ThisError)]
 #[non_exhaustive]
 pub enum ConversionError {
+	/// The incoming value is not a valid integer.
+	#[error("Invalid integer: {0}")]
+	ParseIntError(#[from] ParseIntError),
+	
+	/// The incoming value is not a valid integer for the destination type.
+	#[error("Invalid integer for destination type: {0}")]
+	TryFromIntError(#[from] TryFromIntError),
+	
 	/// The incoming value is negative, which is not allowed by the destination
 	/// type.
 	#[error("Value is negative")]
