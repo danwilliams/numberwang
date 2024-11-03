@@ -2,6 +2,14 @@
 
 
 
+//		Modules
+
+#[cfg(test)]
+#[path = "tests/u63.rs"]
+mod tests;
+
+
+
 //		Packages
 
 use crate::errors::ConversionError;

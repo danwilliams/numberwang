@@ -26,6 +26,11 @@ serde              = { version = "1.0.204", features = ["derive"] }
 thiserror          = "1.0.63"
 tokio-postgres     = "0.7.11"
 
+[dev-dependencies]
+claims             = "0.7.1"
+rubedo             = { version = "0.6.2", features = ["sugar"] }
+serde_json         = { version = "1.0.128", features = ["preserve_order"] }
+
 #=================================[  LINTS  ]===================================
 
 #	For an explanation of the following configuration, see:
