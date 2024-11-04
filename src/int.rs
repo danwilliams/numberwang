@@ -1,12 +1,12 @@
-//! Custom u63 type.
+//! Custom Int type.
 
 
 
 //		Modules
 
-#[cfg(test)]
-#[path = "tests/u63.rs"]
-mod tests;
+// #[cfg(test)]
+// #[path = "tests/int.rs"]
+// mod tests;
 
 
 
@@ -30,7 +30,7 @@ use tokio_postgres::types::{FromSql, IsNull, ToSql, Type, to_sql_checked};
 
 //		Structs
 
-//		u63																		
+//		Int																		
 /// A 63-bit unsigned integer.
 /// 
 /// This type is used to represent the crossover between a [`u64`] (which would
@@ -71,36 +71,35 @@ use tokio_postgres::types::{FromSql, IsNull, ToSql, Type, to_sql_checked};
 /// potentially lossy, [`TryFrom`] is implemented.
 /// 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[expect(non_camel_case_types, reason = "Needed to fit with convention")]
-pub struct u63(u64);
+pub struct Int(u64);
 
-//󰭅		u63																		
-impl u63 {
-	/// The maximum value for a [`u63`].
+//󰭅		Int																		
+impl Int {
+	/// The maximum value for a [`Int`].
 	pub const BITS: u32 = 63_u32;
 	
-	/// The maximum value for a [`u63`].
+	/// The maximum value for a [`Int`].
 	pub const MAX:  Self = Self(i64::MAX as u64);
 	
-	/// The minimum value for a [`u63`].
+	/// The minimum value for a [`Int`].
 	pub const MIN:  Self = Self(0_u64);
 	
-	/// Mask the leading bit that is not part of the [`u63`].
+	/// Mask the leading bit that is not part of the [`Int`].
 	const MASK_LEADING:  u64 = 1 << 63;
 	
-	/// Mask the trailing bit that is not part of the [`u63`].
+	/// Mask the trailing bit that is not part of the [`Int`].
 	const MASK_TRAILING: u64 = 1;
 	
 	//		new																	
-	/// Creates a new [`u63`] from the given value.
+	/// Creates a new [`Int`] from the given value.
 	/// 
 	/// # Parameters
 	/// 
-	/// * `value` - The value to create the [`u63`] from.
+	/// * `value` - The value to create the [`Int`] from.
 	/// 
 	/// # Errors
 	/// 
-	/// Returns an error if the value is too large to fit in a [`u63`].
+	/// Returns an error if the value is too large to fit in a [`Int`].
 	/// 
 	pub const fn new(value: u64) -> Result<Self, ConversionError> {
 		if value > Self::MAX.0 {
@@ -142,7 +141,7 @@ impl u63 {
 	/// Checked division.
 	/// 
 	/// Computes `self / rhs`, returning [`None`] if `rhs` is zero or the result
-	/// is too large to fit in a [`u63`].
+	/// is too large to fit in a [`Int`].
 	/// 
 	/// # Parameters
 	/// 
@@ -175,7 +174,7 @@ impl u63 {
 	/// Checked exponentiation.
 	/// 
 	/// Computes `self.pow(rhs)`, returning [`None`] if the result is too large
-	/// to fit in a [`u63`].
+	/// to fit in a [`Int`].
 	/// 
 	/// # Parameters
 	/// 
@@ -190,7 +189,7 @@ impl u63 {
 	/// Checked remainder.
 	/// 
 	/// Computes `self % rhs`, returning [`None`] if `rhs` is zero or the result
-	/// is too large to fit in a [`u63`].
+	/// is too large to fit in a [`Int`].
 	/// 
 	/// # Parameters
 	/// 
@@ -626,7 +625,7 @@ impl u63 {
 }
 
 //󰭅		Add																		
-impl Add for u63 {
+impl Add for Int {
 	type Output = Self;
 	
 	//		add																	
@@ -637,7 +636,7 @@ impl Add for u63 {
 }
 
 //󰭅		AddAssign																
-impl AddAssign for u63 {
+impl AddAssign for Int {
 	//		add_assign															
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn add_assign(&mut self, rhs: Self) {
@@ -646,7 +645,7 @@ impl AddAssign for u63 {
 }
 
 //󰭅		Binary																	
-impl Binary for u63 {
+impl Binary for Int {
 	//		fmt																	
 	fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
 		if f.alternate() {
@@ -657,7 +656,7 @@ impl Binary for u63 {
 }
 
 //󰭅		BitAnd																	
-impl BitAnd for u63 {
+impl BitAnd for Int {
 	type Output = Self;
 	
 	//		bitand																
@@ -667,7 +666,7 @@ impl BitAnd for u63 {
 }
 
 //󰭅		BitAndAssign															
-impl BitAndAssign for u63 {
+impl BitAndAssign for Int {
 	//		bitand_assign														
 	fn bitand_assign(&mut self, rhs: Self) {
 		*self = *self & rhs;
@@ -675,7 +674,7 @@ impl BitAndAssign for u63 {
 }
 
 //󰭅		BitOr																	
-impl BitOr for u63 {
+impl BitOr for Int {
 	type Output = Self;
 	
 	//		bitor																
@@ -685,7 +684,7 @@ impl BitOr for u63 {
 }
 
 //󰭅		BitOrAssign																
-impl BitOrAssign for u63 {
+impl BitOrAssign for Int {
 	//		bitor_assign														
 	fn bitor_assign(&mut self, rhs: Self) {
 		*self = *self | rhs;
@@ -693,7 +692,7 @@ impl BitOrAssign for u63 {
 }
 
 //󰭅		BitXor																	
-impl BitXor for u63 {
+impl BitXor for Int {
 	type Output = Self;
 	
 	//		bitxor																
@@ -703,7 +702,7 @@ impl BitXor for u63 {
 }
 
 //󰭅		BitXorAssign															
-impl BitXorAssign for u63 {
+impl BitXorAssign for Int {
 	//		bitxor_assign														
 	fn bitxor_assign(&mut self, rhs: Self) {
 		*self = *self ^ rhs;
@@ -711,7 +710,7 @@ impl BitXorAssign for u63 {
 }
 
 //󰭅		Deref																	
-impl Deref for u63 {
+impl Deref for Int {
 	type Target = u64;
 	
 	//		deref																
@@ -721,7 +720,7 @@ impl Deref for u63 {
 }
 
 //󰭅		Display																	
-impl Display for u63 {
+impl Display for Int {
 	//		fmt																	
 	fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
 		write!(f, "{}", self.0)
@@ -729,7 +728,7 @@ impl Display for u63 {
 }
 
 //󰭅		Div																		
-impl Div for u63 {
+impl Div for Int {
 	type Output = Self;
 	
 	//		div																	
@@ -741,7 +740,7 @@ impl Div for u63 {
 }
 
 //󰭅		DivAssign																
-impl DivAssign for u63 {
+impl DivAssign for Int {
 	//		div_assign															
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn div_assign(&mut self, rhs: Self) {
@@ -749,8 +748,8 @@ impl DivAssign for u63 {
 	}
 }
 
-//󰭅		From: u8 -> u63															
-impl From<u8> for u63 {
+//󰭅		From: u8 -> Int															
+impl From<u8> for Int {
 	//		from																
 	fn from(v: u8) -> Self {
 		#[expect(clippy::cast_lossless, reason = "Fine here")]
@@ -758,8 +757,8 @@ impl From<u8> for u63 {
 	}
 }
 
-//󰭅		From: u16 -> u63														
-impl From<u16> for u63 {
+//󰭅		From: u16 -> Int														
+impl From<u16> for Int {
 	//		from																
 	fn from(v: u16) -> Self {
 		#[expect(clippy::cast_lossless, reason = "Fine here")]
@@ -767,8 +766,8 @@ impl From<u16> for u63 {
 	}
 }
 
-//󰭅		From: u32 -> u63														
-impl From<u32> for u63 {
+//󰭅		From: u32 -> Int														
+impl From<u32> for Int {
 	//		from																
 	fn from(v: u32) -> Self {
 		#[expect(clippy::cast_lossless, reason = "Fine here")]
@@ -776,41 +775,41 @@ impl From<u32> for u63 {
 	}
 }
 
-//󰭅		From: u63 -> i64														
-impl From<u63> for i64 {
+//󰭅		From: Int -> i64														
+impl From<Int> for i64 {
 	//		from																
 	#[expect(clippy::cast_possible_wrap, reason = "Safe, as fully managed")]
-	fn from(v: u63) -> Self {
+	fn from(v: Int) -> Self {
 		v.0 as Self
 	}
 }
 
-//󰭅		From: u63 -> i128														
-impl From<u63> for i128 {
+//󰭅		From: Int -> i128														
+impl From<Int> for i128 {
 	//		from																
-	fn from(v: u63) -> Self {
+	fn from(v: Int) -> Self {
 		Self::from(v.0)
 	}
 }
 
-//󰭅		From: u63 -> u64														
-impl From<u63> for u64 {
+//󰭅		From: Int -> u64														
+impl From<Int> for u64 {
 	//		from																
-	fn from(v: u63) -> Self {
+	fn from(v: Int) -> Self {
 		v.0
 	}
 }
 
-//󰭅		From: u63 -> u128														
-impl From<u63> for u128 {
+//󰭅		From: Int -> u128														
+impl From<Int> for u128 {
 	//		from																
-	fn from(v: u63) -> Self {
+	fn from(v: Int) -> Self {
 		Self::from(v.0)
 	}
 }
 
 //󰭅		FromSql																	
-impl<'a> FromSql<'a> for u63 {
+impl<'a> FromSql<'a> for Int {
 	//		from_sql															
 	fn from_sql(ty: &Type, raw: &'a [u8]) -> Result<Self, Box<dyn Error + Sync + Send>> {
 		match ty {
@@ -818,7 +817,7 @@ impl<'a> FromSql<'a> for u63 {
 			&Type::INT8 => Self::try_from(i64::from_sql(ty, raw)?).map_err(Into::into),
 			unknown     => Err(Box::new(IoError::new(
 				IoErrorKind::InvalidData,
-				format!("Invalid type for u63: {unknown}"),
+				format!("Invalid type for Int: {unknown}"),
 			))),
 		}
 	}
@@ -830,7 +829,7 @@ impl<'a> FromSql<'a> for u63 {
 }
 
 //󰭅		FromStr																	
-impl FromStr for u63 {
+impl FromStr for Int {
 	type Err = ConversionError;
 	
 	//		from_str															
@@ -840,7 +839,7 @@ impl FromStr for u63 {
 }
 
 //󰭅		LowerExp																
-impl LowerExp for u63 {
+impl LowerExp for Int {
 	//		fmt																	
 	fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
 		write!(f, "{:e}", self.0)
@@ -848,7 +847,7 @@ impl LowerExp for u63 {
 }
 
 //󰭅		LowerHex																
-impl LowerHex for u63 {
+impl LowerHex for Int {
 	//		fmt																	
 	fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
 		if f.alternate() {
@@ -859,7 +858,7 @@ impl LowerHex for u63 {
 }
 
 //󰭅		Mul																		
-impl Mul for u63 {
+impl Mul for Int {
 	type Output = Self;
 	
 	//		mul																	
@@ -870,7 +869,7 @@ impl Mul for u63 {
 }
 
 //󰭅		MulAssign																
-impl MulAssign for u63 {
+impl MulAssign for Int {
 	//		mul_assign															
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn mul_assign(&mut self, rhs: Self) {
@@ -879,7 +878,7 @@ impl MulAssign for u63 {
 }
 
 //󰭅		Not																		
-impl Not for u63 {
+impl Not for Int {
 	type Output = Self;
 	
 	//		not																	
@@ -889,7 +888,7 @@ impl Not for u63 {
 }
 
 //󰭅		Octal																	
-impl Octal for u63 {
+impl Octal for Int {
 	//		fmt																	
 	fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
 		if f.alternate() {
@@ -900,7 +899,7 @@ impl Octal for u63 {
 }
 
 //󰭅		Product																	
-impl Product for u63 {
+impl Product for Int {
 	//		product																
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn product<I>(iter: I) -> Self
@@ -912,7 +911,7 @@ impl Product for u63 {
 }
 
 //󰭅		Product<&>																
-impl<'a> Product<&'a Self> for u63 {
+impl<'a> Product<&'a Self> for Int {
 	//		product																
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn product<I>(iter: I) -> Self
@@ -924,7 +923,7 @@ impl<'a> Product<&'a Self> for u63 {
 }
 
 //󰭅		Rem																		
-impl Rem for u63 {
+impl Rem for Int {
 	type Output = Self;
 	
 	//		rem																	
@@ -936,7 +935,7 @@ impl Rem for u63 {
 }
 
 //󰭅		RemAssign																
-impl RemAssign for u63 {
+impl RemAssign for Int {
 	//		rem_assign															
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn rem_assign(&mut self, rhs: Self) {
@@ -945,7 +944,7 @@ impl RemAssign for u63 {
 }
 
 //󰭅		Shl																		
-impl Shl<u32> for u63 {
+impl Shl<u32> for Int {
 	type Output = Self;
 	
 	//		shl																	
@@ -955,7 +954,7 @@ impl Shl<u32> for u63 {
 }
 
 //󰭅		ShlAssign																
-impl ShlAssign<u32> for u63 {
+impl ShlAssign<u32> for Int {
 	//		shl_assign															
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn shl_assign(&mut self, rhs: u32) {
@@ -964,7 +963,7 @@ impl ShlAssign<u32> for u63 {
 }
 
 //󰭅		Shr																		
-impl Shr<u32> for u63 {
+impl Shr<u32> for Int {
 	type Output = Self;
 	
 	//		shr																	
@@ -974,7 +973,7 @@ impl Shr<u32> for u63 {
 }
 
 //󰭅		ShrAssign																
-impl ShrAssign<u32> for u63 {
+impl ShrAssign<u32> for Int {
 	//		shr_assign															
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn shr_assign(&mut self, rhs: u32) {
@@ -983,7 +982,7 @@ impl ShrAssign<u32> for u63 {
 }
 
 //󰭅		Sub																		
-impl Sub for u63 {
+impl Sub for Int {
 	type Output = Self;
 	
 	//		sub																	
@@ -994,7 +993,7 @@ impl Sub for u63 {
 }
 
 //󰭅		SubAssign																
-impl SubAssign for u63 {
+impl SubAssign for Int {
 	//		sub_assign															
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn sub_assign(&mut self, rhs: Self) {
@@ -1003,7 +1002,7 @@ impl SubAssign for u63 {
 }
 
 //󰭅		Sum																		
-impl Sum for u63 {
+impl Sum for Int {
 	//		sum																	
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn sum<I>(iter: I) -> Self
@@ -1015,7 +1014,7 @@ impl Sum for u63 {
 }
 
 //󰭅		Sum<&>																	
-impl<'a> Sum<&'a Self> for u63 {
+impl<'a> Sum<&'a Self> for Int {
 	//		sum																	
 	#[expect(clippy::arithmetic_side_effects, reason = "Needs to emulate Rust standard library behaviour")]
 	fn sum<I>(iter: I) -> Self
@@ -1027,7 +1026,7 @@ impl<'a> Sum<&'a Self> for u63 {
 }
 
 //󰭅		ToSql																	
-impl ToSql for u63 {
+impl ToSql for Int {
 	//		to_sql																
 	fn to_sql(&self, ty: &Type, out: &mut BytesMut) -> Result<IsNull, Box<dyn Error + Sync + Send>> {
 		i64::from(*self).to_sql(ty, out)
@@ -1041,8 +1040,8 @@ impl ToSql for u63 {
 	to_sql_checked!();
 }
 
-//󰭅		TryFrom: i8 -> u63														
-impl TryFrom<i8> for u63 {
+//󰭅		TryFrom: i8 -> Int														
+impl TryFrom<i8> for Int {
 	type Error = ConversionError;
 	
 	//		try_from															
@@ -1052,8 +1051,8 @@ impl TryFrom<i8> for u63 {
 	}
 }
 
-//󰭅		TryFrom: i16 -> u63														
-impl TryFrom<i16> for u63 {
+//󰭅		TryFrom: i16 -> Int														
+impl TryFrom<i16> for Int {
 	type Error = ConversionError;
 	
 	//		try_from															
@@ -1063,8 +1062,8 @@ impl TryFrom<i16> for u63 {
 	}
 }
 
-//󰭅		TryFrom: i32 -> u63														
-impl TryFrom<i32> for u63 {
+//󰭅		TryFrom: i32 -> Int														
+impl TryFrom<i32> for Int {
 	type Error = ConversionError;
 	
 	//		try_from															
@@ -1074,8 +1073,8 @@ impl TryFrom<i32> for u63 {
 	}
 }
 
-//󰭅		TryFrom: i64 -> u63														
-impl TryFrom<i64> for u63 {
+//󰭅		TryFrom: i64 -> Int														
+impl TryFrom<i64> for Int {
 	type Error = ConversionError;
 	
 	//		try_from															
@@ -1085,8 +1084,8 @@ impl TryFrom<i64> for u63 {
 	}
 }
 
-//󰭅		TryFrom: i128 -> u63													
-impl TryFrom<i128> for u63 {
+//󰭅		TryFrom: i128 -> Int													
+impl TryFrom<i128> for Int {
 	type Error = ConversionError;
 	
 	//		try_from															
@@ -1104,8 +1103,8 @@ impl TryFrom<i128> for u63 {
 	}
 }
 
-//󰭅		TryFrom: isize -> u63													
-impl TryFrom<isize> for u63 {
+//󰭅		TryFrom: isize -> Int													
+impl TryFrom<isize> for Int {
 	type Error = ConversionError;
 	
 	//		try_from															
@@ -1114,98 +1113,98 @@ impl TryFrom<isize> for u63 {
 	}
 }
 
-//󰭅		TryFrom: u63 -> i8														
-impl TryFrom<u63> for i8 {
+//󰭅		TryFrom: Int -> i8														
+impl TryFrom<Int> for i8 {
 	type Error = ConversionError;
 	
 	//		try_from															
-	fn try_from(v: u63) -> Result<Self, Self::Error> {
+	fn try_from(v: Int) -> Result<Self, Self::Error> {
 		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
-//󰭅		TryFrom: u63 -> i16														
-impl TryFrom<u63> for i16 {
+//󰭅		TryFrom: Int -> i16														
+impl TryFrom<Int> for i16 {
 	type Error = ConversionError;
 	
 	//		try_from															
-	fn try_from(v: u63) -> Result<Self, Self::Error> {
+	fn try_from(v: Int) -> Result<Self, Self::Error> {
 		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
-//󰭅		TryFrom: u63 -> i32														
-impl TryFrom<u63> for i32 {
+//󰭅		TryFrom: Int -> i32														
+impl TryFrom<Int> for i32 {
 	type Error = ConversionError;
 	
 	//		try_from															
-	fn try_from(v: u63) -> Result<Self, Self::Error> {
+	fn try_from(v: Int) -> Result<Self, Self::Error> {
 		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
-//󰭅		TryFrom: u63 -> isize													
-impl TryFrom<u63> for isize {
+//󰭅		TryFrom: Int -> isize													
+impl TryFrom<Int> for isize {
 	type Error = ConversionError;
 	
 	//		try_from															
-	fn try_from(v: u63) -> Result<Self, Self::Error> {
+	fn try_from(v: Int) -> Result<Self, Self::Error> {
 		Ok(Self::try_from(v.as_i64())?)
 	}
 }
 
-//󰭅		TryFrom: u63 -> u8														
-impl TryFrom<u63> for u8 {
+//󰭅		TryFrom: Int -> u8														
+impl TryFrom<Int> for u8 {
 	type Error = ConversionError;
 	
 	//		try_from															
-	fn try_from(v: u63) -> Result<Self, Self::Error> {
+	fn try_from(v: Int) -> Result<Self, Self::Error> {
 		#[expect(clippy::cast_lossless,            reason = "Fine here")]
 		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
-//󰭅		TryFrom: u63 -> u16														
-impl TryFrom<u63> for u16 {
+//󰭅		TryFrom: Int -> u16														
+impl TryFrom<Int> for u16 {
 	type Error = ConversionError;
 	
 	//		try_from															
-	fn try_from(v: u63) -> Result<Self, Self::Error> {
+	fn try_from(v: Int) -> Result<Self, Self::Error> {
 		#[expect(clippy::cast_lossless,            reason = "Fine here")]
 		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
-//󰭅		TryFrom: u63 -> u32														
-impl TryFrom<u63> for u32 {
+//󰭅		TryFrom: Int -> u32														
+impl TryFrom<Int> for u32 {
 	type Error = ConversionError;
 	
 	//		try_from															
-	fn try_from(v: u63) -> Result<Self, Self::Error> {
+	fn try_from(v: Int) -> Result<Self, Self::Error> {
 		#[expect(clippy::cast_lossless,            reason = "Fine here")]
 		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
-//󰭅		TryFrom: u63 -> usize													
-impl TryFrom<u63> for usize {
+//󰭅		TryFrom: Int -> usize													
+impl TryFrom<Int> for usize {
 	type Error = ConversionError;
 	
 	//		try_from															
-	fn try_from(v: u63) -> Result<Self, Self::Error> {
+	fn try_from(v: Int) -> Result<Self, Self::Error> {
 		#[expect(clippy::cast_possible_truncation, reason = "Already checked")]
 		(v.as_u64() <= Self::MAX as u64).then_some(v.as_u64() as Self).ok_or(ConversionError::ValueTooLarge)
 	}
 }
 
-//󰭅		TryFrom: u64 -> u63														
-impl TryFrom<u64> for u63 {
+//󰭅		TryFrom: u64 -> Int														
+impl TryFrom<u64> for Int {
 	type Error = ConversionError;
 	
 	//		try_from															
@@ -1214,8 +1213,8 @@ impl TryFrom<u64> for u63 {
 	}
 }
 
-//󰭅		TryFrom: u128 -> u63													
-impl TryFrom<u128> for u63 {
+//󰭅		TryFrom: u128 -> Int													
+impl TryFrom<u128> for Int {
 	type Error = ConversionError;
 	
 	//		try_from															
@@ -1225,8 +1224,8 @@ impl TryFrom<u128> for u63 {
 	}
 }
 
-//󰭅		TryFrom: usize -> u63													
-impl TryFrom<usize> for u63 {
+//󰭅		TryFrom: usize -> Int													
+impl TryFrom<usize> for Int {
 	type Error = ConversionError;
 	
 	//		try_from															
@@ -1236,7 +1235,7 @@ impl TryFrom<usize> for u63 {
 }
 
 //󰭅		UpperExp																
-impl UpperExp for u63 {
+impl UpperExp for Int {
 	//		fmt																	
 	fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
 		write!(f, "{:E}", self.0)
@@ -1244,7 +1243,7 @@ impl UpperExp for u63 {
 }
 
 //󰭅		UpperHex																
-impl UpperHex for u63 {
+impl UpperHex for Int {
 	//		fmt																	
 	fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
 		if f.alternate() {

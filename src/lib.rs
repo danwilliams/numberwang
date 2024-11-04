@@ -38,15 +38,13 @@
 //		Modules
 
 mod errors;
-
-#[path = "u63.rs"]
-mod u63_mod;
+mod int;
 
 
 
 //		Packages
 
 pub use errors::ConversionError;
-pub use u63_mod::u63;
+pub use int::Int;
 
 
