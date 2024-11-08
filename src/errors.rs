@@ -16,6 +16,18 @@ use thiserror::Error as ThisError;
 #[derive(Clone, Debug, Eq, PartialEq, ThisError)]
 #[non_exhaustive]
 pub enum ConversionError {
+	/// The incoming value is empty, e.g. an empty string.
+	#[error("Empty value")]
+	EmptyValue,
+	
+	/// The incoming value is not a valid integer.
+	#[error("Invalid digit: {0}")]
+	InvalidDigit(char),
+	
+	/// The incoming value is not a valid integer.
+	#[error("Invalid digit for base {1}: {0}")]
+	InvalidRadix(char, u8),
+	
 	/// The incoming value is not a valid integer.
 	#[error("Invalid integer: {0}")]
 	ParseIntError(#[from] ParseIntError),

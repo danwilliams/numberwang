@@ -22,14 +22,16 @@ lto       = "thin" # Enable link-time optimisation (fast)
 
 [dependencies]
 bytes              = "1.7.1"
+generic-array      = "1.1.0"
 serde              = { version = "1.0.204", features = ["derive"] }
+serde_json         = { version = "1.0.128", features = ["preserve_order"] }
 thiserror          = "1.0.63"
 tokio-postgres     = "0.7.11"
+typenum            = "1.17.0"
 
 [dev-dependencies]
 claims             = "0.7.1"
 rubedo             = { version = "0.6.2", features = ["sugar"] }
-serde_json         = { version = "1.0.128", features = ["preserve_order"] }
 
 #=================================[  LINTS  ]===================================
 
@@ -152,7 +154,7 @@ rc_buffer                         = "warn"
 redundant_type_annotations        = "warn"
 rest_pat_in_fully_bound_structs   = "warn"
 same_name_method                  = "warn"
-semicolon_outside_block           = "warn"
+semicolon_inside_block            = "warn"
 shadow_reuse                      = "warn"
 shadow_same                       = "warn"
 shadow_unrelated                  = "warn"

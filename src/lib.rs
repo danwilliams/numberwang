@@ -20,6 +20,7 @@
 	clippy::exhaustive_structs,
 	clippy::expect_used,
 	clippy::indexing_slicing,
+	clippy::integer_division,
 	clippy::let_underscore_must_use,
 	clippy::let_underscore_untyped,
 	clippy::missing_assert_message,
@@ -45,6 +46,6 @@ mod int;
 //		Packages
 
 pub use errors::ConversionError;
-pub use int::Int;
+pub use int::{BytesForBits, Int, SInt, UInt};
 
 
