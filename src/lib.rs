@@ -6,6 +6,7 @@
 
 //	Customisations of the standard linting configuration
 #![allow(clippy::items_after_test_module, reason = "Not needed with separated tests")]
+#![allow(clippy::multiple_crate_versions, reason = "generic_array deep dependency waiting for digest update")]
 
 //	Lints specifically disabled for unit tests
 #![cfg_attr(test, allow(
