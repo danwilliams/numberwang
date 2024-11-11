@@ -1,5 +1,11 @@
 # Numberwang
 
+![Rust](https://img.shields.io/badge/Rust-1.81%2B-b7410e?style=flat&logo=rust&logoColor=white&labelColor=b7410e)
+[![Crate version](https://img.shields.io/crates/v/numberwang?style=flat)](https://crates.io/crates/numberwang)
+[![CI](https://img.shields.io/github/actions/workflow/status/danwilliams/numberwang/ci.yml?style=flat&logo=github&logoColor=white&label=build%2Ftest)](https://github.com/danwilliams/numberwang/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/docsrs/numberwang?style=flat&logo=docs.rs&logoColor=white)](https://docs.rs/crate/numberwang/latest)
+![License](https://img.shields.io/github/license/danwilliams/numberwang?style=flat)
+
 The Numberwang crate is a library of custom number types and functionality,
 including variable-bit-width integers.
 
