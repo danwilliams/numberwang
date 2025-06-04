@@ -2,7 +2,7 @@
 
 
 
-//		Global configuration
+//		Global configuration																							
 
 //	Customisations of the standard linting configuration
 #![allow(clippy::items_after_test_module, reason = "Not needed with separated tests")]
@@ -36,14 +36,14 @@
 
 
 
-//		Modules
+//		Modules																											
 
 mod errors;
 mod int;
 
 
 
-//		Packages
+//		Packages																										
 
 pub use errors::ConversionError;
 pub use int::{BytesForBits, Int, SInt, UInt};

@@ -2,14 +2,14 @@
 
 
 
-//		Packages
+//		Packages																										
 
 use core::num::{ParseIntError, TryFromIntError};
 use thiserror::Error as ThisError;
 
 
 
-//		Enums
+//		Enums																											
 
 //		ConversionError															
 /// Represents all possible conversion errors that can occur.

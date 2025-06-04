@@ -23,7 +23,7 @@
 
 
 
-//		Modules
+//		Modules																											
 
 #[cfg(test)]
 #[path = "tests/int.rs"]
@@ -31,7 +31,7 @@ mod tests;
 
 
 
-//		Packages
+//		Packages																										
 
 use crate::errors::ConversionError;
 use bytes::BytesMut;
@@ -59,7 +59,7 @@ use typenum::{B0, B1, Quot, Sum as TnSum, U7, U8, UInt as TnUInt, Unsigned, UTer
 
 
 
-//		Type aliases
+//		Type aliases																									
 
 /// Helper type to calculate number of bytes needed for bits.
 pub type BytesForBits<BITS> = Quot<TnSum<BITS, U7>, U8>;
@@ -72,7 +72,7 @@ pub type UInt<BITS> = Int<BITS, false>;
 
 
 
-//		Structs
+//		Structs																											
 
 //		Int																		
 /// A flexible-length integer.

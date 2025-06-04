@@ -1,4 +1,4 @@
-//		Packages
+//		Packages																										
 
 use super::*;
 use bytes::BytesMut;
@@ -11,14 +11,14 @@ use typenum::U63;
 
 
 
-//		Type aliases
+//		Type aliases																									
 
 #[expect(non_camel_case_types, reason = "To fit with other primitives")]
 type u63 = Int<U63, false>;
 
 
 
-//		Tests
+//		Tests																											
 
 mod constructors {
 	use super::*;
