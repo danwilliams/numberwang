@@ -1,6 +1,6 @@
 [package]
 name          = "numberwang"
-version       = "0.1.0"
+version       = "0.1.1"
 description   = "Library of custom number malarkey, including variable-bit-width integers"
 categories    = ["data-structures", "database", "encoding"]
 keywords      = ["integer", "library", "utility"]
