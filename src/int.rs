@@ -1247,9 +1247,9 @@ where
 			let mut byte = self.0[i];
 			
 			//	Reverse the bits in this byte
-			byte = (byte & 0xF0) >> 4_i32 | (byte & 0x0F) << 4_i32;
-			byte = (byte & 0xCC) >> 2_i32 | (byte & 0x33) << 2_i32;
-			byte = (byte & 0xAA) >> 1_i32 | (byte & 0x55) << 1_i32;
+			byte = ((byte & 0xF0) >> 4_i32) | ((byte & 0x0F) << 4_i32);
+			byte = ((byte & 0xCC) >> 2_i32) | ((byte & 0x33) << 2_i32);
+			byte = ((byte & 0xAA) >> 1_i32) | ((byte & 0x55) << 1_i32);
 			
 			//	Place in opposite position
 			result[Self::BYTES as usize - 1 - i] = byte;
